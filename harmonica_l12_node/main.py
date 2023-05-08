@@ -100,7 +100,6 @@ def main():
     subparser_run.set_defaults(handler=execute_run)
 
     subparser_run_once = subparsers.add_parser('run_once')
-    subparser_run_once.add_argument('--env_file', type=str, default=env_vals.get('ENV_FILE'))
     subparser_run_once.add_argument('--router_url', type=str, default=env_vals.get('ROUTER_URL'))
     subparser_run_once.add_argument('--output_timezone', type=str, default=env_vals.get('OUTPUT_TIMEZONE'))
     subparser_run_once.add_argument('--api_url', type=str, default=env_vals.get('API_URL'))
