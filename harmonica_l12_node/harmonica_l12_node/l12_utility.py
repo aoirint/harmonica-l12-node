@@ -8,8 +8,8 @@ from pydantic import BaseModel
 
 class TrafficCounter(BaseModel):
     timestamp: datetime
-    daily_lbl: int
-    monthly_lbl: int
+    daily: int
+    monthly: int
 
 
 def get_traffic_counter(
@@ -24,11 +24,11 @@ def get_traffic_counter(
     r = requests.get(router_home_url)
     bs = BeautifulSoup(r.text, 'html5lib')
 
-    daily_lbl_string = bs.find(id='Traffic_Counter_daily_Lbl').attrs.get('value')
-    monthly_lbl_string = bs.find(id='Traffic_Counter_monthly_Lbl').attrs.get('value')
+    daily_string = bs.find(id='Traffic_Counter_daily_Lbl').attrs.get('value')
+    monthly_string = bs.find(id='Traffic_Counter_monthly_Lbl').attrs.get('value')
 
     return TrafficCounter(
         timestamp=now,
-        daily_lbl=int(daily_lbl_string),
-        monthly_lbl=int(monthly_lbl_string),
+        daily=int(daily_string),
+        monthly=int(monthly_string),
     )

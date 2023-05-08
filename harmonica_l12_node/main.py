@@ -18,21 +18,21 @@ def update_once(
         timezone=timezone,
     )
 
-    daily_usage_gigabytes = traffic_counter.daily_lbl / (10 ** 9)
-    monthly_usage_gigabytes = traffic_counter.monthly_lbl / (10 ** 9)
+    daily_usage_gigabytes = traffic_counter.daily / (10 ** 9)
+    monthly_usage_gigabytes = traffic_counter.monthly / (10 ** 9)
 
     print(f'{traffic_counter.timestamp.isoformat()} Daily: {daily_usage_gigabytes:.02f}, Monthly: {monthly_usage_gigabytes:.02f}')
 
     result = create_l12_traffic(
         api_url=api_url,
         api_token=api_token,
-        daily_lbl=traffic_counter.daily_lbl,
-        monthly_lbl=traffic_counter.monthly_lbl,
+        daily=traffic_counter.daily,
+        monthly=traffic_counter.monthly,
         timestamp=traffic_counter.timestamp.isoformat(),
     )
 
-    print(f'Created a daily sensor value ({result.daily_lbl.id}).')
-    print(f'Created a monthly sensor value ({result.monthly_lbl.id}).')
+    print(f'Created a daily sensor value ({result.daily.id}).')
+    print(f'Created a monthly sensor value ({result.monthly.id}).')
 
 
 class ConfigRun(BaseModel):
