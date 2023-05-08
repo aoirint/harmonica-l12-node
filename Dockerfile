@@ -25,5 +25,6 @@ RUN <<EOF
     gosu user pip3 install --no-cache-dir -r /requirements.txt
 EOF
 
-ADD ./main.py /code/
-ENTRYPOINT [ "gosu", "user", "python3", "/code/main.py" ]
+ADD ./harmonica_l12_node /code/harmonica_l12_node
+ENTRYPOINT [ "gosu", "user", "python3", "/code/harmonica_l12_node/main.py" ]
+CMD [ "run" ]

@@ -1,0 +1,20 @@
+mutation CreateSensorValue(
+  $key: String!
+  $value: numeric!
+  $timestamp: timestamptz!
+) {
+  sensor_value: insert_SensorValue_one(
+    object: {
+      key: $key
+      value: $value
+      timestamp: $timestamp
+    }
+  ) {
+    id
+    key
+    value
+    timestamp
+    created_at
+    updated_at
+  }
+}

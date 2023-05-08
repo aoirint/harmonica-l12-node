@@ -1,15 +1,11 @@
-# l12_traffic_watcher
+# harmonica_l12_node
 
 ```shell
 poetry export --without-hashes -o requirements.txt
 ```
 
 ```shell
-docker build -t l12_traffic_watcher .
+docker build -t harmonica_l12_node .
 
-mkdir work
-chown -R 1000:1000 work
-docker run --rm --env-file ./.env -w /work -v "./work:/work" l12_traffic_watcher
-
-docker run --rm --env-file ./.env  l12_traffic_watcher
+docker run --rm --env-file ./.env harmonica_l12_node
 ```
