@@ -11,10 +11,12 @@ def update_once(
     router_url: str,
     api_url: str,
     api_token: str,
+    timeout: float,
     timezone: str,
 ):
     traffic_counter = get_traffic_counter(
         router_url=router_url,
+        timeout=timeout,
         timezone=timezone,
     )
 
@@ -26,6 +28,7 @@ def update_once(
     result = create_l12_traffic(
         api_url=api_url,
         api_token=api_token,
+        timeout=timeout,
         daily=traffic_counter.daily,
         monthly=traffic_counter.monthly,
         timestamp=traffic_counter.timestamp.isoformat(),
@@ -39,6 +42,7 @@ class ConfigRun(BaseModel):
     router_url: str
     api_url: str
     api_token: str
+    timeout: float
     output_timezone: str
     output_interval: int
 
@@ -47,6 +51,7 @@ class ConfigRunOnce(BaseModel):
     router_url: str
     api_url: str
     api_token: str
+    timeout: float
     output_timezone: str
 
 
@@ -58,6 +63,7 @@ def execute_run(args):
         router_url=config.router_url,
         api_url=config.api_url,
         api_token=config.api_token,
+        timeout=config.timeout,
         timezone=config.output_timezone,
     )
 
@@ -73,6 +79,7 @@ def execute_run_once(args):
         router_url=config.router_url,
         api_url=config.api_url,
         api_token=config.api_token,
+        timeout=config.timeout,
         timezone=config.output_timezone,
     )
 
@@ -97,6 +104,7 @@ def main():
     subparser_run.add_argument('--output_interval', type=int, default=env_vals.get('OUTPUT_INTERVAL'))
     subparser_run.add_argument('--api_url', type=str, default=env_vals.get('API_URL'))
     subparser_run.add_argument('--api_token', type=str, default=env_vals.get('API_TOKEN'))
+    subparser_run.add_argument('--timeout', type=float, default=env_vals.get('HL12N_TIMEOUT', '10.0'))
     subparser_run.set_defaults(handler=execute_run)
 
     subparser_run_once = subparsers.add_parser('run_once')
@@ -104,6 +112,7 @@ def main():
     subparser_run_once.add_argument('--output_timezone', type=str, default=env_vals.get('OUTPUT_TIMEZONE'))
     subparser_run_once.add_argument('--api_url', type=str, default=env_vals.get('API_URL'))
     subparser_run_once.add_argument('--api_token', type=str, default=env_vals.get('API_TOKEN'))
+    subparser_run_once.add_argument('--timeout', type=float, default=env_vals.get('HL12N_TIMEOUT', '10.0'))
     subparser_run_once.set_defaults(handler=execute_run_once)
 
     args = parser.parse_args()

@@ -28,12 +28,14 @@ class CreateL12TrafficResult(BaseModel):
 def create_sensor_value(
     api_url: str,
     api_token: str,
+    timeout: float,
     key: str,
     value: float,
     timestamp: str,
 ) -> CreateSensorValueResponse:
     res = requests.post(
         url=api_url, 
+        timeout=timeout,
         headers={
             'Authorization': f'Bearer {api_token}',
         },
@@ -63,6 +65,7 @@ def create_sensor_value(
 def create_l12_traffic(
   api_url: str,
   api_token: str,
+  timeout: float,
   daily: int,
   monthly: int,
   timestamp: str,
@@ -70,6 +73,7 @@ def create_l12_traffic(
     sensor_value_daily = create_sensor_value(
         api_url=api_url,
         api_token=api_token,
+        timeout=timeout,
         key='l12_traffic_daily',
         value=daily,
         timestamp=timestamp,
@@ -78,6 +82,7 @@ def create_l12_traffic(
     sensor_value_monthly = create_sensor_value(
         api_url=api_url,
         api_token=api_token,
+        timeout=timeout,
         key='l12_traffic_monthly',
         value=monthly,
         timestamp=timestamp,

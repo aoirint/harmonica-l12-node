@@ -13,15 +13,19 @@ class TrafficCounter(BaseModel):
 
 
 def get_traffic_counter(
-  router_url: str,
-  timezone: str | ZoneInfo,
+    router_url: str,
+    timeout: float,
+    timezone: str | ZoneInfo,
 ) -> TrafficCounter:
     router_home_url = urljoin(router_url, 'cgi-bin/luci/')
 
     tz = ZoneInfo(key=timezone) if isinstance(timezone, str) else timezone
     now = datetime.now(tz=tz)
 
-    r = requests.get(router_home_url)
+    r = requests.get(
+        router_home_url,
+        timeout=timeout,
+    )
     bs = BeautifulSoup(r.text, 'html5lib')
 
     daily_string = bs.find(id='Traffic_Counter_daily_Lbl').attrs.get('value')
