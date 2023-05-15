@@ -17,7 +17,7 @@ def get_traffic_counter(
     timeout: float,
     timezone: str | ZoneInfo,
 ) -> TrafficCounter:
-    router_home_url = urljoin(router_url, 'cgi-bin/luci/')
+    router_home_url = urljoin(router_url, "cgi-bin/luci/")
 
     tz = ZoneInfo(key=timezone) if isinstance(timezone, str) else timezone
     now = datetime.now(tz=tz)
@@ -26,10 +26,10 @@ def get_traffic_counter(
         router_home_url,
         timeout=timeout,
     )
-    bs = BeautifulSoup(r.text, 'html5lib')
+    bs = BeautifulSoup(r.text, "html5lib")
 
-    daily_string = bs.find(id='Traffic_Counter_daily_Lbl').attrs.get('value')
-    monthly_string = bs.find(id='Traffic_Counter_monthly_Lbl').attrs.get('value')
+    daily_string = bs.find(id="Traffic_Counter_daily_Lbl").attrs.get("value")
+    monthly_string = bs.find(id="Traffic_Counter_monthly_Lbl").attrs.get("value")
 
     return TrafficCounter(
         timestamp=now,

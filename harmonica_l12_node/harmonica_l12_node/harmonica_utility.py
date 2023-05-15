@@ -3,7 +3,9 @@ from pydantic import BaseModel, parse_obj_as
 
 import importlib.resources as ILR
 
-CREATE_SENSOR_VALUE_QUERY = ILR.read_text('harmonica_l12_node', 'CreateSensorValue.graphql')
+CREATE_SENSOR_VALUE_QUERY = ILR.read_text(
+    "harmonica_l12_node", "CreateSensorValue.graphql"
+)
 
 
 class CreateSensorValueRequest(BaseModel):
@@ -34,14 +36,14 @@ def create_sensor_value(
     timestamp: str,
 ) -> CreateSensorValueResponse:
     res = requests.post(
-        url=api_url, 
+        url=api_url,
         timeout=timeout,
         headers={
-            'Authorization': f'Bearer {api_token}',
+            "Authorization": f"Bearer {api_token}",
         },
         json={
-            'query': CREATE_SENSOR_VALUE_QUERY,
-            'variables': CreateSensorValueRequest(
+            "query": CREATE_SENSOR_VALUE_QUERY,
+            "variables": CreateSensorValueRequest(
                 key=key,
                 value=value,
                 timestamp=timestamp,
@@ -51,11 +53,11 @@ def create_sensor_value(
     res.raise_for_status()
 
     response_json = res.json()
-    response_errors = response_json.get('errors')
+    response_errors = response_json.get("errors")
     if response_errors:
         raise Exception(response_errors)
 
-    response_data = response_json['data']
+    response_data = response_json["data"]
     return parse_obj_as(
         CreateSensorValueResponse,
         response_data,
@@ -63,18 +65,18 @@ def create_sensor_value(
 
 
 def create_l12_traffic(
-  api_url: str,
-  api_token: str,
-  timeout: float,
-  daily: int,
-  monthly: int,
-  timestamp: str,
+    api_url: str,
+    api_token: str,
+    timeout: float,
+    daily: int,
+    monthly: int,
+    timestamp: str,
 ) -> CreateL12TrafficResult:
     sensor_value_daily = create_sensor_value(
         api_url=api_url,
         api_token=api_token,
         timeout=timeout,
-        key='l12_traffic_daily',
+        key="l12_traffic_daily",
         value=daily,
         timestamp=timestamp,
     )
@@ -83,7 +85,7 @@ def create_l12_traffic(
         api_url=api_url,
         api_token=api_token,
         timeout=timeout,
-        key='l12_traffic_monthly',
+        key="l12_traffic_monthly",
         value=monthly,
         timestamp=timestamp,
     )

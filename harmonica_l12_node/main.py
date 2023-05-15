@@ -20,10 +20,12 @@ def update_once(
         timezone=timezone,
     )
 
-    daily_usage_gigabytes = traffic_counter.daily / (10 ** 9)
-    monthly_usage_gigabytes = traffic_counter.monthly / (10 ** 9)
+    daily_usage_gigabytes = traffic_counter.daily / (10**9)
+    monthly_usage_gigabytes = traffic_counter.monthly / (10**9)
 
-    print(f'{traffic_counter.timestamp.isoformat()} Daily: {daily_usage_gigabytes:.02f}, Monthly: {monthly_usage_gigabytes:.02f}')
+    print(
+        f"{traffic_counter.timestamp.isoformat()} Daily: {daily_usage_gigabytes:.02f}, Monthly: {monthly_usage_gigabytes:.02f}"
+    )
 
     result = create_l12_traffic(
         api_url=api_url,
@@ -34,8 +36,8 @@ def update_once(
         timestamp=traffic_counter.timestamp.isoformat(),
     )
 
-    print(f'Created a daily sensor value ({result.daily.id}).')
-    print(f'Created a monthly sensor value ({result.monthly.id}).')
+    print(f"Created a daily sensor value ({result.daily.id}).")
+    print(f"Created a monthly sensor value ({result.monthly.id}).")
 
 
 class ConfigRun(BaseModel):
@@ -86,8 +88,9 @@ def execute_run_once(args):
 
 def main():
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_file', type=str, default=os.environ.get('ENV_FILE'))
+    parser.add_argument("--env_file", type=str, default=os.environ.get("ENV_FILE"))
 
     pre_args, rest_pre_args = parser.parse_known_args()
     env_file: str | None = pre_args.env_file
@@ -98,30 +101,52 @@ def main():
 
     subparsers = parser.add_subparsers()
 
-    subparser_run = subparsers.add_parser('run')
-    subparser_run.add_argument('--router_url', type=str, default=env_vals.get('HL12N_ROUTER_URL'))
-    subparser_run.add_argument('--output_timezone', type=str, default=env_vals.get('HL12N_OUTPUT_TIMEZONE'))
-    subparser_run.add_argument('--output_interval', type=int, default=env_vals.get('HL12N_OUTPUT_INTERVAL'))
-    subparser_run.add_argument('--api_url', type=str, default=env_vals.get('HL12N_API_URL'))
-    subparser_run.add_argument('--api_token', type=str, default=env_vals.get('HL12N_API_TOKEN'))
-    subparser_run.add_argument('--timeout', type=float, default=env_vals.get('HL12N_TIMEOUT', '10.0'))
+    subparser_run = subparsers.add_parser("run")
+    subparser_run.add_argument(
+        "--router_url", type=str, default=env_vals.get("HL12N_ROUTER_URL")
+    )
+    subparser_run.add_argument(
+        "--output_timezone", type=str, default=env_vals.get("HL12N_OUTPUT_TIMEZONE")
+    )
+    subparser_run.add_argument(
+        "--output_interval", type=int, default=env_vals.get("HL12N_OUTPUT_INTERVAL")
+    )
+    subparser_run.add_argument(
+        "--api_url", type=str, default=env_vals.get("HL12N_API_URL")
+    )
+    subparser_run.add_argument(
+        "--api_token", type=str, default=env_vals.get("HL12N_API_TOKEN")
+    )
+    subparser_run.add_argument(
+        "--timeout", type=float, default=env_vals.get("HL12N_TIMEOUT", "10.0")
+    )
     subparser_run.set_defaults(handler=execute_run)
 
-    subparser_run_once = subparsers.add_parser('run_once')
-    subparser_run_once.add_argument('--router_url', type=str, default=env_vals.get('HL12N_ROUTER_URL'))
-    subparser_run_once.add_argument('--output_timezone', type=str, default=env_vals.get('HL12N_OUTPUT_TIMEZONE'))
-    subparser_run_once.add_argument('--api_url', type=str, default=env_vals.get('HL12N_API_URL'))
-    subparser_run_once.add_argument('--api_token', type=str, default=env_vals.get('HL12N_API_TOKEN'))
-    subparser_run_once.add_argument('--timeout', type=float, default=env_vals.get('HL12N_TIMEOUT', '10.0'))
+    subparser_run_once = subparsers.add_parser("run_once")
+    subparser_run_once.add_argument(
+        "--router_url", type=str, default=env_vals.get("HL12N_ROUTER_URL")
+    )
+    subparser_run_once.add_argument(
+        "--output_timezone", type=str, default=env_vals.get("HL12N_OUTPUT_TIMEZONE")
+    )
+    subparser_run_once.add_argument(
+        "--api_url", type=str, default=env_vals.get("HL12N_API_URL")
+    )
+    subparser_run_once.add_argument(
+        "--api_token", type=str, default=env_vals.get("HL12N_API_TOKEN")
+    )
+    subparser_run_once.add_argument(
+        "--timeout", type=float, default=env_vals.get("HL12N_TIMEOUT", "10.0")
+    )
     subparser_run_once.set_defaults(handler=execute_run_once)
 
     args = parser.parse_args()
 
-    if hasattr(args, 'handler'):
+    if hasattr(args, "handler"):
         args.handler(args)
     else:
         parser.print_help()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
