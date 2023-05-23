@@ -8,7 +8,7 @@ packages = [{include = "harmonica_l12_node"}]
 
 [tool.poetry.dependencies]
 python = "~3.11"
-requests = "^2.30.0"
+requests = "^2.31.0"
 beautifulsoup4 = "^4.12.2"
 html5lib = "^1.1"
 schedule = "^1.2.0"
